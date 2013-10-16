@@ -1,6 +1,6 @@
 /**
  * ddmmeditor.class.js
- * @version 1.4.1 (2013-06-28)
+ * @version 1.4.2 (2013-08-09)
  * 
  * Описание класса для работы с правилами.
  *
@@ -718,7 +718,7 @@ $(function(){
 	}
 	extend(ddRule_mm_ddReadonly, ddRule);
 	
-	//Конструктор класса mm_ddSelectDocuments 1.0b
+	//Конструктор класса mm_ddSelectDocuments 1.1b
 	function ddRule_mm_ddSelectDocuments(masParam){
 		//Запускаем конструктор родителя
 		ddRule_mm_ddSelectDocuments.superclass.constructor.apply(this, ['mm_ddSelectDocuments']);
@@ -727,7 +727,7 @@ $(function(){
 		this.params.push(new ddParam_fields(masParam[0], 'TVs'));
 		this.params.push(new ddParam_roles(masParam[1]));
 		this.params.push(new ddParam_templates(masParam[2]));
-		this.params.push(new ddParam_integer('parentId', masParam[3], 'ParentId', '0', true));
+		this.params.push(new ddParam_input('parentIds', masParam[3], 'ParentIds', '0', true));
 		this.params.push(new ddParam_integer('depth', masParam[4], 'Depth', '1'));
 		this.params.push(new ddParam_input('filter', masParam[5], 'Filter'));
 		this.params.push(new ddParam_integer('max', masParam[6], 'Max', '0'));

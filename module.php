@@ -1,11 +1,11 @@
 //<?php
 /**
  * ddMMEditor module
- * @version 1.4.1 (2013-06-28)
+ * @version 1.4.2 (2013-08-09)
  *
  * User-friendly module for the ManagerManager configuration file editing.
  * 
- * @link http://code.divandesign.biz/modx/ddmmeditor/1.4.1
+ * @link http://code.divandesign.biz/modx/ddmmeditor/1.4.2
  * 
  * @copyright 2013, DivanDesign
  * http://www.DivanDesign.biz
@@ -24,7 +24,7 @@ if(!$modx){
 	}
 }
 
-$version = '1.4.1';
+$version = '1.4.2';
 
 //Полный адрес файла
 $fileName = MODX_BASE_PATH.'assets/plugins/managermanager/mm_rules.inc.php';
