@@ -213,7 +213,7 @@ $output .= '
 <script src="'.$site_url.'assets/modules/ddmmeditor/js/jquery-1.10.1.min.js" type="text/javascript"></script>
 <script src="'.$site_url.'assets/modules/ddmmeditor/js/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
 <script src="'.$site_url.'assets/modules/ddmmeditor/js/jquery.ddTools-1.8.5.min.js" type="text/javascript"></script>
-<script src="'.$site_url.'assets/modules/ddmmeditor/js/jquery.ddMultipleInput-1.1.min.js" type="text/javascript"></script>
+<script src="'.$site_url.'assets/modules/ddmmeditor/js/jquery.ddMultipleInput-1.2.1.min.js" type="text/javascript"></script>
 <script src="'.$site_url.'assets/modules/ddmmeditor/js/ddmmeditor.class.js" type="text/javascript"></script>
 <script src="'.$site_url.'assets/modules/ddmmeditor/js/ddmmeditor.js" type="text/javascript"></script>
 </head>
