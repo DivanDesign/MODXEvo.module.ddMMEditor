@@ -161,6 +161,16 @@ $fields[] = 'which_editor';
 $fields[] = 'resource_type'; 
 $fields[] = 'weblink';
 
+if (method_exists($modx, 'getVersionData')){
+	//В новом MODX в метод можно просто передать 'version' и сразу получить нужный элемент, но не в старом
+	$modxVersionData = $modx->getVersionData();
+
+	//If version of MODX > 1.0.11
+	if (version_compare($modxVersionData['version'], '1.0.11', '>')){
+		$fields[]  = 'alias_visible';
+	}
+}
+
 $fields = json_encode($fields);
 
 $outputJs = "var rulesJSON = ".$rules.";";
