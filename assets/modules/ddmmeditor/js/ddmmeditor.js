@@ -89,6 +89,7 @@ $(function(){
 				'mm_ddAutoFolders',
 				'mm_ddFillMenuindex',
 				'mm_widget_accessdenied',
+				'mm_ddHTMLCleaner',
 				'ddCustomRule'
 			)
 		}

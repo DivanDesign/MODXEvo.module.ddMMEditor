@@ -155,6 +155,9 @@ $(function(){
 				case 'mm_widget_accessdenied':
 					rulesMas[indexParam] = new ddRule_mm_widget_accessdenied(masParam);
 				break;
+				case 'mm_ddHTMLCleaner':
+					rulesMas[indexParam] = new ddRule_mm_ddHTMLCleaner(masParam);
+				break;
 				case 'mm_ddMaxLength':
 					rulesMas[indexParam] = new ddRule_mm_ddMaxLength(masParam);
 				break;
@@ -786,6 +789,21 @@ $(function(){
 		this.params.push(new ddParam_templates(masParam[3]));
 	}
 	extend(ddRule_mm_renameSection, ddRule);
+	
+	//Конструктор класса mm_ddHTMLCleaner 1.0.1
+	function ddRule_mm_ddHTMLCleaner(masParam){
+		//Запускаем конструктор родителя
+		ddRule_mm_ddHTMLCleaner.superclass.constructor.apply(this, ['mm_ddHTMLCleaner']);
+		
+		//mm_ddHTMLCleaner($fields, $roles = '', $templates = '', $validAttrsForAllTags = 'title,class', $validStyles = 'word-spacing', $validAttrs = '{"img":"src,alt,width,height","a":"href,target"}')
+		this.params.push(new ddParam_fields(masParam[0]));
+		this.params.push(new ddParam_roles(masParam[1]));
+		this.params.push(new ddParam_templates(masParam[2]));
+		this.params.push(new ddParam_input('validAttrsForAllTags', masParam[3], 'validAttrsForAllTags', 'title,class'));
+		this.params.push(new ddParam_input('validStyles', masParam[4], 'validStyles', 'word-spacing'));
+		this.params.push(new ddParam_input('validAttrs', masParam[5], 'validAttrs', '{&#34;img&#34;:&#34;src,alt,width,height&#34;,&#34;a&#34;:&#34;href,target&#34;}'));
+	}
+	extend(ddRule_mm_ddHTMLCleaner, ddRule);
 	
 	//Конструктор класса ddRule_customRule
 	function ddRule_customRule(masParam){
