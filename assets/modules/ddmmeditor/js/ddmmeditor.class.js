@@ -474,7 +474,7 @@ $(function(){
 		this.params.push(new ddParam_roles(masParam[2]));
 		this.params.push(new ddParam_templates(masParam[3]));
 		this.params.push(new ddParam_input('intro', masParam[4], 'Intro'));
-		this.params.push(new ddParam_integer('mmwidth', masParam[5], 'Width', '', false, true));
+		this.params.push(new ddParam_integer('mmwidth', masParam[5], 'Width', '680', false, true));
 	}
 	extend(ddRule_mm_createTab, ddRule);
 	
@@ -501,7 +501,7 @@ $(function(){
 		//mm_widget_tags($fields, $delimiter = ',', $source = '', $display_count = false, $roles = '', $templates = '')
 		this.params.push(new ddParam_fields(masParam[0]));
 		this.params.push(new ddParam_input('delimiter', masParam[1], 'Delimiter', ','));
-		this.params.push(new ddParam_fields(masParam[0], 'Source'));
+		this.params.push(new ddParam_fields(masParam[0], 'Source', '', false));
 		this.params.push(new ddParam_checkbox('display_count', masParam[3], 'Display count'));
 		this.params.push(new ddParam_roles(masParam[4]));
 		this.params.push(new ddParam_templates(masParam[5]));
@@ -714,14 +714,14 @@ $(function(){
 		ddRule_mm_ddReadonly.superclass.constructor.apply(this, ['mm_ddReadonly']);
 		
 		//mm_ddReadonly($fields = '', $roles = '', $templates = '')
-		this.params.push(new ddParam_fields(masParam[0], 'TVs'));
+		this.params.push(new ddParam_fields(masParam[0]));
 		this.params.push(new ddParam_roles(masParam[1]));
 		this.params.push(new ddParam_templates(masParam[2]));
 		
 	}
 	extend(ddRule_mm_ddReadonly, ddRule);
 	
-	//Конструктор класса mm_ddSelectDocuments 1.1b
+	//Конструктор класса mm_ddSelectDocuments 1.2.1
 	function ddRule_mm_ddSelectDocuments(masParam){
 		//Запускаем конструктор родителя
 		ddRule_mm_ddSelectDocuments.superclass.constructor.apply(this, ['mm_ddSelectDocuments']);
@@ -734,6 +734,7 @@ $(function(){
 		this.params.push(new ddParam_integer('depth', masParam[4], 'Depth', '1'));
 		this.params.push(new ddParam_input('filter', masParam[5], 'Filter'));
 		this.params.push(new ddParam_integer('max', masParam[6], 'Max', '0'));
+		this.params.push(new ddParam_input('labelMask', masParam[7], 'Label mask', '[+title+] ([+id+])'));
 		
 	}
 	extend(ddRule_mm_ddSelectDocuments, ddRule);
