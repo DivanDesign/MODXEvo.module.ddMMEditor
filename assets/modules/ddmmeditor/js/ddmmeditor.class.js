@@ -67,9 +67,7 @@ $(function(){
 /**start*****Глобальный объект управления правилами*/
 	Rules = {
 		//Создаём правила из всего объекта
-		constructorRules: function(rulesJSON){
-			var rulesObj = rulesJSON;
-			
+		constructorRules: function(rulesObj){
 			//Перебираем объект
 			$.each(rulesObj, function(groupName, elem){
 				if (groupName == 'comment_top' || groupName == 'comment_bottom'){
@@ -964,29 +962,37 @@ $(function(){
 		}
 	};
 	
+	//Конструктор общего класса ddParam_multiple
+	function ddParam_multiple(className, value, displayName, defaultValue, required){
+		
+		//Запускаем родительский конструктор с необходимыми параметрами (по умолчанию не обязательно для заполнения)
+		ddParam_multiple.superclass.constructor.apply(this, [className, value, displayName, defaultValue, ($.type(required) != 'undefined' && required) ? true : false, null, '<input type="button" value="+" class="autocomplete_show" />']);
+	}
+	extend(ddParam_multiple, ddParam_input);
+	
 	//Конструктор класса Field
 	function ddParam_fields(value, displayName, defaultValue, required){
 		displayName = (displayName && $.type(displayName) == 'string') ? displayName : 'Fields';
 		
 		//Запускаем родительский конструктор с необходимыми параметрами (по умолчанию обязательно для заполнения)
-		ddParam_fields.superclass.constructor.apply(this, ['input_field', value, displayName, defaultValue, ($.type(required) != 'undefined' && !required) ? false : true, null, '<input type="button" value="+" class="autocomplete_show" />']);
+		ddParam_fields.superclass.constructor.apply(this, ['input_field', value, displayName, defaultValue, ($.type(required) != 'undefined' && !required) ? false : true]);
 	}
-	extend(ddParam_fields, ddParam_input);
+	extend(ddParam_fields, ddParam_multiple);
 	
 	//Конструктор класса ddParam_roles
 	function ddParam_roles(value, displayName, defaultValue){
 		displayName = (displayName && $.type(displayName) == 'string') ? displayName : 'Roles';
 		
-		ddParam_roles.superclass.constructor.apply(this, ['select_role', value, displayName, defaultValue, false, null, '<input type="button" value="+" class="autocomplete_show" />']);
+		ddParam_roles.superclass.constructor.apply(this, ['select_role', value, displayName, defaultValue]);
 	}
-	extend(ddParam_roles, ddParam_input);
+	extend(ddParam_roles, ddParam_multiple);
 	
 	//Конструктор класса ddParam_templates
 	function ddParam_templates(value, displayName, defaultValue){
 		displayName = (displayName && $.type(displayName) == 'string') ? displayName : 'Templates';
 		
-		ddParam_templates.superclass.constructor.apply(this, ['select_template', value, displayName, defaultValue, true, null, '<input type="button" value="+" class="autocomplete_show" />']);
+		ddParam_templates.superclass.constructor.apply(this, ['select_template', value, displayName, defaultValue]);
 	}
-	extend(ddParam_templates, ddParam_input);
+	extend(ddParam_templates, ddParam_multiple);
 /**end*****Классы параметров*/
 });
