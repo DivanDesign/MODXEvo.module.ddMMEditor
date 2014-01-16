@@ -47,15 +47,21 @@ $(function(){
 	var rulesMas = new Array(),
 		//Индекс последнего созданного объекта
 		indexParam = 0,
-		//Объект со значениями ролей
-		rolesOdj = rolesJSON,
-		//Объект со значениями шаблонов
-		templatesOdj = templatesJSON,
 		//Контейнер, содержащий группы с правилами
 		$rulesCont = $('#rules_cont');
 
-	for (var i = 0, len = templatesOdj.length; i < len; i++){
-		templatesOdj.push({value: '!' + templatesOdj[i].value, label: '!' + templatesOdj[i].label});
+	for (var i = 0, len = templatesJSON.length; i < len; i++){
+		templatesJSON.push({
+			value: '!' + templatesJSON[i].value,
+			label: '!' + templatesJSON[i].label
+		});
+	}
+	
+	for (var i = 0, len = rolesJSON.length; i < len; i++){
+		rolesJSON.push({
+			value: '!' + rolesJSON[i].value,
+			label: '!' + rolesJSON[i].label
+		});
 	}
 	
 /**start*****Глобальный объект управления правилами*/
@@ -250,7 +256,9 @@ $(function(){
 			//Автозаполнение полей для всех параметров-полей
 			ddAutocomplete($elem.find('.input_field'), tvsAutocomplite);
 			//Автозаполнение шаблонов
-			ddAutocomplete($elem.find('.select_template'), templatesOdj);
+			ddAutocomplete($elem.find('.select_template'), templatesJSON);
+			//Автозаполнение ролей
+			ddAutocomplete($elem.find('.select_role'), rolesJSON);
 			//Ввод только чисел в числовые поля
 			$elem.find('.ddParam_integer').ddNumeric({allowFloat: false});
 			$elem.find('.ddParam_integerEmpty').ddNumeric({allowFloat: false, allowEmpty: true});
@@ -967,11 +975,11 @@ $(function(){
 	
 	//Конструктор класса ddParam_roles
 	function ddParam_roles(value, displayName, defaultValue){
-		displayName = (displayName && $.type(displayName) == 'string') ? displayName : 'Role';
+		displayName = (displayName && $.type(displayName) == 'string') ? displayName : 'Roles';
 		
-		ddParam_roles.superclass.constructor.apply(this, ['select_role', value, displayName, defaultValue, rolesOdj, new Array('', '!')]);
+		ddParam_roles.superclass.constructor.apply(this, ['select_role', value, displayName, defaultValue, false, null, '<input type="button" value="+" class="autocomplete_show" />']);
 	}
-	extend(ddParam_roles, ddParam_select);
+	extend(ddParam_roles, ddParam_input);
 	
 	//Конструктор класса ddParam_templates
 	function ddParam_templates(value, displayName, defaultValue){

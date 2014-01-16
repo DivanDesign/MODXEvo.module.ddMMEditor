@@ -117,9 +117,9 @@ if (isset($rules['comment_bottom'])){$rules['comment_bottom'] = implode('', $rul
 $rules = json_encode($rules);
 
 //Создаём объект ролей
-$roles = json_encode($modx->db->makeArray($modx->db->select("id, name", $modx->getFullTableName('user_roles'), "", "id ASC")));
+$roles = json_encode($modx->db->makeArray($modx->db->select("`id` AS `value`, CONCAT(`name`, ' (', `id`, ')') AS `label`", $modx->getFullTableName('user_roles'), "", "id ASC")));
 //Создаём объект шаблонов
-$templates = $modx->db->makeArray($modx->db->select("`id` AS `value`, CONCAT(`templatename`, ' (', `id`, ')') AS label", $modx->getFullTableName('site_templates'), "", "templatename ASC"));
+$templates = $modx->db->makeArray($modx->db->select("`id` AS `value`, CONCAT(`templatename`, ' (', `id`, ')') AS `label`", $modx->getFullTableName('site_templates'), "", "templatename ASC"));
 array_unshift($templates, array('value' => 0, 'label' => 'blank (0)'));
 $templates = json_encode($templates);
 
