@@ -18,8 +18,7 @@ if(!$modx){
 	return;
 }else{
 	//Сравниваем url сайта из конфига с реальным (в качестве длины берём длину из конфига, чтобы лишнее не смотреть)
-	$site_url = $modx->config['site_url'];
-	if (strncasecmp($site_url, $_SERVER['HTTP_REFERER'], strlen($site_url)) != 0){
+	if (strncasecmp($modx->config['site_url'], $_SERVER['HTTP_REFERER'], strlen($modx->config['site_url'])) != 0){
 		return;
 	}
 }
@@ -29,7 +28,7 @@ $version = '1.4.2';
 //Полный адрес файла
 $fileName = MODX_BASE_PATH.'assets/plugins/managermanager/mm_rules.inc.php';
 //Сохраняем пост в массив
-if (isset($_POST['rules'])) $saveMas = $_POST['rules'];
+if (isset($_POST['rules'])){$saveMas = $_POST['rules'];}
 
 //Если массив с постом не пустой, то запускаем сохранение
 if (isset($saveMas)){
@@ -65,19 +64,18 @@ if (!file_exists($fileName)){
 
 //Считываем файл
 $config = file($fileName);
-$site_url = $modx->config['site_url'];
 $rules = array();
 $group = '';
 //Перебираем файл по строкам
 foreach ($config as $line){
 	$line = trim($line);
 	
-	if ($line == '<?php' || $line == '?>' || $line == '') continue;
+	if ($line == '<?php' || $line == '?>' || $line == ''){continue;}
 	
 	//Создаём группу
 	if (strncasecmp($line, '//group', 7) == 0){
 		$group = substr($line, 8);
-		if (!isset($rules[$group])) $rules[$group] = array();
+		if (!isset($rules[$group])){$rules[$group] = array();}
 		continue;
 	}
 	
@@ -173,10 +171,10 @@ if (method_exists($modx, 'getVersionData')){
 
 $fields = json_encode($fields);
 
-$outputJs = "var rulesJSON = ".$rules.";";
-$outputJs .= "var rolesJSON = ".$roles.";";
-$outputJs .= "var templatesJSON = ".$templates.";";
-$outputJs .= "var tvsAutocomplite = ".$fields.";";
+$outputJs = "Rules.data.rules = ".$rules.";";
+$outputJs .= "Rules.data.roles = ".$roles.";";
+$outputJs .= "Rules.data.templates = ".$templates.";";
+$outputJs .= "Rules.data.fields = ".$fields.";";
 
 //Получим конфиг MM
 if (isset($modx->pluginCache['ManagerManager'])){
@@ -205,17 +203,17 @@ if (isset($mmProperties['config_chunk']) && $mmProperties['config_chunk'] != '')
 //Формируем вывод
 $output = '<html>
 <head>';
-$output .= '<base href="'.$site_url.'" />';
-$output .= '<script type=text/javascript>'.$outputJs.'</script>';
+$output .= '<base href="'.$modx->config['site_url'].'" />';
 $output .= '
 <link rel="stylesheet" type="text/css" href="'.MODX_MANAGER_URL.'media/style/'.$modx->config['manager_theme'].'/style.css" />
-<link rel="stylesheet" type="text/css" href="'.$site_url.'/assets/modules/ddmmeditor/css/general.css" />
-<script src="'.$site_url.'assets/modules/ddmmeditor/js/jquery-1.10.1.min.js" type="text/javascript"></script>
-<script src="'.$site_url.'assets/modules/ddmmeditor/js/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-<script src="'.$site_url.'assets/modules/ddmmeditor/js/jquery.ddTools-1.8.5.min.js" type="text/javascript"></script>
-<script src="'.$site_url.'assets/modules/ddmmeditor/js/jquery.ddMultipleInput-1.2.1.min.js" type="text/javascript"></script>
-<script src="'.$site_url.'assets/modules/ddmmeditor/js/ddmmeditor.class.js" type="text/javascript"></script>
-<script src="'.$site_url.'assets/modules/ddmmeditor/js/ddmmeditor.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="'.$modx->config['site_url'].'/assets/modules/ddmmeditor/css/general.css" />
+<script src="'.$modx->config['site_url'].'assets/modules/ddmmeditor/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+<script src="'.$modx->config['site_url'].'assets/modules/ddmmeditor/js/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+<script src="'.$modx->config['site_url'].'assets/modules/ddmmeditor/js/jquery.ddTools-1.8.5.min.js" type="text/javascript"></script>
+<script src="'.$modx->config['site_url'].'assets/modules/ddmmeditor/js/jquery.ddMultipleInput-1.2.1.min.js" type="text/javascript"></script>
+<script src="'.$modx->config['site_url'].'assets/modules/ddmmeditor/js/ddmmeditor.class.js" type="text/javascript"></script>
+<script type="text/javascript">'.$outputJs.'</script>
+<script src="'.$modx->config['site_url'].'assets/modules/ddmmeditor/js/ddmmeditor.js" type="text/javascript"></script>
 </head>
 <body>
 	<h1>ddMMEditor<span id="ver"> '.$version.'</span></h1>

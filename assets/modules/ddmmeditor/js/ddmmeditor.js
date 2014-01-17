@@ -8,12 +8,6 @@
  * http://www.DivanDesign.ru
  **/
 
-var $groupTemplate = $('<div class="group"><div class="title"><span>New group</span> <a href="#Edit" class="false editButton"></a></div><div class="titleButtons"><a href="#Hide" class="false hideButton"><span>+</span><span>&minus;</span></a> <a class="false deleteButton" href="#Remove">×</a></div></div>');
-//Автозаполнение
-function split(val){return val.split( /,\s*/ );}
-
-function extractLast(term){return split(term).pop();}
-
 $(function(){
 	//Шаблон поля для выбора новых правил
 	var newRuleTpl = '<select id="new_role_select" size="25">[+options+]</select>';
@@ -110,8 +104,11 @@ $(function(){
 	//Блокируем переход по псевдо ссылкам
 	$.ddTools.$body.on('click.false', 'a.false', function(event){event.preventDefault();});
 	
+	//Контейнер, содержащий группы с правилами
+	Rules.$rulesCont = $('#rules_cont');
+	
 	//Создаем массив с правилами
-	Rules.constructorRules(rulesJSON);
+	Rules.constructorRules();
 	
 	var $ajaxLoader = $('.ajaxLoader'),
 		//Добавляем список с правилами
@@ -158,13 +155,13 @@ $(function(){
 	//Сохранение файла 
 	$('#save_rules a').on('click', function(){
 		$ajaxLoader.show();
-		//Подготавливаем массив
-		Rules.save();
+		
 		//Отправляем массив на сервер
 		$.ajax({
 			url: document.location.href,
 			type: 'POST',
-			data: {rules:rulesSave},
+			//Подготавливаем массив
+			data: {rules: Rules.save()},
 			success: function(data){
 				$ajaxLoader.hide();
 				alert(data);
@@ -192,12 +189,12 @@ $(function(){
 	
 	//Создание группы правил
 	$('#new_group').on('click', function(event, groupClass){
-		var $group = $groupTemplate.clone();
+		var $group = Rules.tpls.$group.clone();
 		 
 		if (!groupClass){groupClass = '';}
 		
 		$group.addClass(groupClass);
-		$group.appendTo('#rules_cont');
+		$group.appendTo(Rules.$rulesCont);
 		
 		$group.sortable(groupSortableOpt);
 		
@@ -263,7 +260,7 @@ $(function(){
 	});
 	
 	//Сортировка групп
-	$('#rules_cont').sortable({
+	Rules.$rulesCont.sortable({
 		handle: 'div.title span',
 		cursor: 'n-resize',
 		axis: 'y',
@@ -274,5 +271,5 @@ $(function(){
 	});
 	
 	//Сортировка внутри групп
-	$('#rules_cont .group').sortable(groupSortableOpt);
+	Rules.$rulesCont.find('.group').sortable(groupSortableOpt);
 });
