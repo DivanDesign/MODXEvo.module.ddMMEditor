@@ -25,177 +25,27 @@ if(!$modx){
 
 $version = '1.4.2';
 
-//Полный адрес файла
-$fileName = MODX_BASE_PATH.'assets/plugins/managermanager/mm_rules.inc.php';
-//Сохраняем пост в массив
-if (isset($_POST['rules'])){$saveMas = $_POST['rules'];}
+//Подключаем класс модуля
+require_once MODX_BASE_PATH.'assets/modules/ddmmeditor/ddmmeditor.class.php';
 
-//Если массив с постом не пустой, то запускаем сохранение
-if (isset($saveMas)){
-	//Добавляем в массив открытие и закрытие php кода
-	array_unshift($saveMas,'<?php');
-	array_push($saveMas, '?>');
-
-	//Открываем файл
-	if(!$file = fopen($fileName, 'w')){
-		echo "Can't open file ".$fileName;
-		return;
-	}
+//Если переданы правила для сохранения
+if (isset($_POST['rules'])){
+	//Сохраняем
+	$msg = ddMMEditor::saveRules($_POST['rules']);
 	
-	//Перебираем массив со строками
-	foreach ($saveMas as $value){
-		//Записываем строку в файл
-		if (fwrite($file, $value."\n") === false){
-			echo "Can't write string to file ".$fileName;
-			return;
-		}
-	}
-	//Закрываем файл
-	fclose($file);
-	echo "Write success";
-	return;
+	if ($msg !== false){return $msg;}
 }
 
-//Если файла нет
-if (!file_exists($fileName)){
-	//Создадим его
-	fclose(fopen($fileName, 'w'));
-}
+$autocompleteData = ddMMEditor::getAutocompleteData();
 
-//Считываем файл
-$config = file($fileName);
-$rules = array();
-$group = '';
-//Перебираем файл по строкам
-foreach ($config as $line){
-	$line = trim($line);
-	
-	if ($line == '<?php' || $line == '?>' || $line == ''){continue;}
-	
-	//Создаём группу
-	if (strncasecmp($line, '//group', 7) == 0){
-		$group = substr($line, 8);
-		if (!isset($rules[$group])){$rules[$group] = array();}
-		continue;
-	}
-	
-	switch ($group){
-		case 'comment_top':
-		case 'comment_bottom':
-			$rules[$group][] = $line."\n";
-// 			$rules[$group][] = str_replace(array('"', "'"), '\"', $line)."\n";
-		break;
-		
-		default:
-			$temp = array();
-			
-			//Если это кастомная строка правила
-			if (strncasecmp($line, '/*ddCustomRule*/', 16) == 0){
-				$temp['name'] = 'ddCustomRule';
-				$temp['param'] = str_replace('/*ddCustomRule*/', '', $line);
-				$temp['param'] = str_replace(array('"', "'"), '&#34;', $temp['param']);
-			//Если это нормальное правило
-			}else{
-				$sepF = strpos($line, '(');
-				$sepL = strrpos($line, ')');
-				
-				$temp['name'] = substr($line, 0, $sepF);
-				$temp['param'] = substr($line, $sepF + 1, ($sepL - $sepF - 1));
-				$temp['param'] = str_replace('"', "&#34;", $temp['param']);
-			}
-			
-			$rules[$group][] = $temp;
-	}
-}
-
-if (isset($rules['comment_top'])){$rules['comment_top'] = implode('', $rules['comment_top']);}
-if (isset($rules['comment_bottom'])){$rules['comment_bottom'] = implode('', $rules['comment_bottom']);}
-
-//Преобразуем в JSON, экранируем \'
-$rules = json_encode($rules);
-
-//Создаём объект ролей
-$roles = json_encode($modx->db->makeArray($modx->db->select("`id` AS `value`, CONCAT(`name`, ' (', `id`, ')') AS `label`", $modx->getFullTableName('user_roles'), "", "id ASC")));
-//Создаём объект шаблонов
-$templates = $modx->db->makeArray($modx->db->select("`id` AS `value`, CONCAT(`templatename`, ' (', `id`, ')') AS `label`", $modx->getFullTableName('site_templates'), "", "templatename ASC"));
-array_unshift($templates, array('value' => 0, 'label' => 'blank (0)'));
-$templates = json_encode($templates);
-
-//Получаем все используемые tv
-$sql = "SELECT `name` FROM {$modx->getFullTableName('site_tmplvars')} GROUP BY `name` ASC";
-$temp = $modx->db->makeArray($modx->db->query($sql));
-$fields = array();
-
-foreach($temp as $value){$fields[] = $value['name'];}
-
-//Добавим поля документа
-$fields[] = 'pagetitle';
-$fields[] = 'longtitle';
-$fields[] = 'description';
-$fields[] = 'alias';
-$fields[] = 'link_attributes';
-$fields[] = 'introtext';
-$fields[] = 'template';
-$fields[] = 'menutitle';
-$fields[] = 'menuindex';
-$fields[] = 'show_in_menu';
-$fields[] = 'hide_menu';
-$fields[] = 'parent';
-$fields[] = 'is_folder';
-$fields[] = 'is_richtext';
-$fields[] = 'log';
-$fields[] = 'published';
-$fields[] = 'pub_date';
-$fields[] = 'unpub_date'; 
-$fields[] = 'searchable'; 
-$fields[] = 'cacheable';
-$fields[] = 'clear_cache';
-$fields[] = 'content_type';
-$fields[] = 'content_dispo'; 
-$fields[] = 'keywords';
-$fields[] = 'metatags';
-$fields[] = 'content';
-$fields[] = 'which_editor';
-$fields[] = 'resource_type'; 
-$fields[] = 'weblink';
-
-if (method_exists($modx, 'getVersionData')){
-	//В новом MODX в метод можно просто передать 'version' и сразу получить нужный элемент, но не в старом
-	$modxVersionData = $modx->getVersionData();
-
-	//If version of MODX > 1.0.11
-	if (version_compare($modxVersionData['version'], '1.0.11', '>')){
-		$fields[]  = 'alias_visible';
-	}
-}
-
-$fields = json_encode($fields);
-
-$outputJs = "Rules.data.rules = ".$rules.";";
-$outputJs .= "Rules.data.roles = ".$roles.";";
-$outputJs .= "Rules.data.templates = ".$templates.";";
-$outputJs .= "Rules.data.fields = ".$fields.";";
-
-//Получим конфиг MM
-if (isset($modx->pluginCache['ManagerManager'])){
-	$mmProperties = $modx->pluginCache['ManagerManagerProps'];
-}else{
-	$sql = 'SELECT `properties` FROM '.$modx->getFullTableName('site_plugins').' WHERE `name` = "ManagerManager" AND `disabled` = 0;';
-	$dbResult = $modx->db->query($sql);
-
-	if ($modx->db->getRecordCount($dbResult) == 1){
-		$row = $modx->db->getRow($dbResult);
-
-		$mmProperties = $row['properties'];
-	}else{
-		$mmProperties = '';
-	}
-}
-
-$mmProperties = $modx->parseProperties($mmProperties);
+//Считываем правила из файла
+$outputJs = 'Rules.data.rules = '.ddMMEditor::readRules().';';
+$outputJs .= 'Rules.data.roles = '.$autocompleteData['roles'].';';
+$outputJs .= 'Rules.data.templates = '.$autocompleteData['templates'].';';
+$outputJs .= 'Rules.data.fields = '.$autocompleteData['fields'].';';
 
 //Если чанк в конфиге MM задан
-if (isset($mmProperties['config_chunk']) && $mmProperties['config_chunk'] != ''){
+if (!ddMMEditor::checkMMConfig()){
 	//Громко ругаемся
 	$outputJs .= 'alert("The \'Configuration Chunk\' parameter in the configuration of ManagerManager plugin was defined!\r\nThe rules created here won\'t be applied!");';
 }
