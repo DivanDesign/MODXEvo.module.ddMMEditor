@@ -1,11 +1,11 @@
 /**
  * ddmmeditor.class.js
- * @version 1.4.2 (2013-08-09)
+ * @version 1.5 (2014-01-23)
  * 
- * Описание класса для работы с правилами.
- *
- * @copyright 2013, DivanDesign
- * http://www.DivanDesign.ru
+ * @desc Описание класса для работы с правилами.
+ * 
+ * @copyright 2014, DivanDesign
+ * http://www.DivanDesign.biz
  **/
 
 /**start*****Глобальный объект управления правилами*/
