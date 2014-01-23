@@ -25,8 +25,12 @@ if(!$modx){
 
 $version = '1.4.2';
 
+$moduleDir = MODX_BASE_PATH.'assets/modules/ddmmeditor/';
+
 //Подключаем класс модуля
-require_once MODX_BASE_PATH.'assets/modules/ddmmeditor/ddmmeditor.class.php';
+require_once $moduleDir.'ddmmeditor.class.php';
+//ddTools
+require_once $moduleDir.'modx.ddtools.class.php';
 
 //Если переданы правила для сохранения
 if (isset($_POST['rules'])){
@@ -51,56 +55,10 @@ if (!ddMMEditor::checkMMConfig()){
 }
 
 //Формируем вывод
-$output = '<html>
-<head>';
-$output .= '<base href="'.$modx->config['site_url'].'" />';
-$output .= '
-<link rel="stylesheet" type="text/css" href="'.MODX_MANAGER_URL.'media/style/'.$modx->config['manager_theme'].'/style.css" />
-<link rel="stylesheet" type="text/css" href="'.$modx->config['site_url'].'/assets/modules/ddmmeditor/css/general.css" />
-<script src="'.$modx->config['site_url'].'assets/modules/ddmmeditor/js/jquery-1.10.1.min.js" type="text/javascript"></script>
-<script src="'.$modx->config['site_url'].'assets/modules/ddmmeditor/js/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-<script src="'.$modx->config['site_url'].'assets/modules/ddmmeditor/js/jquery.ddTools-1.8.5.min.js" type="text/javascript"></script>
-<script src="'.$modx->config['site_url'].'assets/modules/ddmmeditor/js/jquery.ddMultipleInput-1.2.1.min.js" type="text/javascript"></script>
-<script src="'.$modx->config['site_url'].'assets/modules/ddmmeditor/js/ddmmeditor.class.js" type="text/javascript"></script>
-<script type="text/javascript">'.$outputJs.'</script>
-<script src="'.$modx->config['site_url'].'assets/modules/ddmmeditor/js/ddmmeditor.js" type="text/javascript"></script>
-</head>
-<body>
-	<h1>ddMMEditor<span id="ver"> '.$version.'</span></h1>
-	<div id="actions">
-		<ul class="actionButtons">
-			<li id="new_rule"><a href="#">New rule</a></li>
-			<li id="new_group"><a href="#">New group</a></li>
-			<li id="save_rules"><a href="#">Save</a></li>
-		</ul>
-	</div>
-	<div class="sectionBody">
-		<div id="tabs" class="dynamic-tab-pane-control">
-			<ul class="tab_cont tab-row">
-				<li class="tab"><a href="#">Rules</a></li>
-				<li class="tab"><a href="#">Manual input</a></li>
-			</ul>
-			<div id="ui-tabs-1" class="tab-page">
-				<div id="rules_cont">
-				</div>
-			</div>
-			<div id="ui-tabs-2" class="tab-page">
-				<h3>Top</h3>
-				<p>This code will be inserted before all rules.</p>
-				<textarea id="comment_top"></textarea>
-				<h3>Bottom</h3>
-				<p>This code will be inserted after all rules.</p>
-				<textarea id="comment_bottom"></textarea>
-			</div>
-		</div>
-		<div class="ajaxLoader"></div>
-	</div>
-	<div class="ddFooter">
-		<div style="float: left;"><a href="http://code.divandesign.biz/modx/ddmmeditor/'.$version.'" target="_blank">Documentation</a></div>
-		<address>Created by <a href="http://www.DivanDesign.biz" target="_blank">DivanDesign</a></address>
-	</div>
-	<div class="clear"></div>
-</body>
-</html>';
-echo $output;
+echo ddTools::parseText(file_get_contents($moduleDir.'template.html'), array(
+	'site_url' => $modx->config['site_url'],
+	'manager_theme' => MODX_MANAGER_URL.'media/style/'.$modx->config['manager_theme'].'/style.css',
+	'inline_js' => $outputJs,
+	'version' => $version
+), '[+', '+]', false);
 //?>
