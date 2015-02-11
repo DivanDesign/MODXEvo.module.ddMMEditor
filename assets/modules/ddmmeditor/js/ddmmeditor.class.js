@@ -428,7 +428,7 @@ function ddRule_mm_hideTemplates(masParam){
 	ddRule_mm_hideTemplates.superclass.constructor.apply(this, ['mm_hideTemplates']);
 
 	//mm_hideTemplates($tplIds, $roles, $templates)
-	this.params.push(new ddParam_templates(masParam[2], 'Templates Ids'));
+	this.params.push(new ddParam_templates(masParam[0], 'Templates Ids'));
 	this.params.push(new ddParam_roles(masParam[1]));
 	this.params.push(new ddParam_templates(masParam[2]));
 }
