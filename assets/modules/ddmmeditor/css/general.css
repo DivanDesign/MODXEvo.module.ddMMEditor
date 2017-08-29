@@ -103,6 +103,7 @@ body {
 
 .ruleForm > div > * {
 	display:inline-block;
+	width: auto;
 	margin-right: 0.5em;
 	float:left;
 }
