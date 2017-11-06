@@ -4,14 +4,13 @@
  * 
  * @desc Описание класса для работы с правилами.
  * 
- * @copyright 2014, DivanDesign
- * http://www.DivanDesign.biz
+ * @copyright 2013–2014 [DivanDesign]{@link http://www.DivanDesign.biz }
  **/
 
 $(function(){
 	//Шаблон поля для выбора новых правил
 	var newRuleTpl = '<select id="new_role_select" size="25">[+options+]</select>';
-
+	
 	//Спивок создаваемых правил
 	var newRuleSelect = new Array(
 		{
@@ -91,10 +90,18 @@ $(function(){
 
 	var newRuleSelectOut = '';
 
-	for (var i = 0, len = newRuleSelect.length; i < len; i++){
+	for (
+		var i = 0, len = newRuleSelect.length;
+		i < len;
+		i++
+	){
 		newRuleSelectOut += '<optgroup label="' + newRuleSelect[i].label + '">';
 		
-		for (var j = 0, jlen = newRuleSelect[i].values.length; j < jlen; j++){
+		for (
+			var j = 0, jlen = newRuleSelect[i].values.length;
+			j < jlen;
+			j++
+		){
 			newRuleSelectOut += '<option>' + newRuleSelect[i].values[j] + '</option>';
 		}
 		
@@ -125,13 +132,20 @@ $(function(){
 		}
 		
 		//Создаём в массиве правило
-		Rules.newRule($this.find('option:selected').text(), '', $('.group.default'));
+		Rules.newRule(
+			$this.find('option:selected').text(),
+			'',
+			$('.group.default')
+		);
 		
 		//Скрываем список с правилами
 		$this.hide();
 	}).on('keypress', function(event){
 		//Если нажали энтер или пробел
-		if (event.keyCode == 13 || event.keyCode == 32){
+		if (
+			event.keyCode == 13 ||
+			event.keyCode == 32
+		){
 			$(this).trigger('click');
 		}
 	});
@@ -144,9 +158,10 @@ $(function(){
 		}else{
 			$newRoleSelect.hide();
 		}
+		
 		return false;
 	});
-
+	
 	//Удаляем форму
 	$.ddTools.$body.on('click', 'input.del', function(){
 		$(this).parents('form.ruleForm:first').remove();
@@ -228,7 +243,10 @@ $(function(){
 		var $title = $(this).siblings('span'),
 			name = prompt('Enter the group name', $title.text());
 		
-		if (name != '' && name != null){
+		if (
+			name != '' &&
+			name != null
+		){
 			$title.text(name);
 			$title.parents('.group:first').removeClass('default');
 		}

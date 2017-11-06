@@ -4,8 +4,7 @@
  * 
  * @desc Описание класса для работы с правилами.
  * 
- * @copyright 2014, DivanDesign
- * http://www.DivanDesign.biz
+ * @copyright 2013–2014 [DivanDesign]{@link http://www.DivanDesign.biz }
  **/
 
 /**start*****Глобальный объект управления правилами*/
@@ -18,15 +17,21 @@ var Rules = {
 		ruleForm: '<form action="javascript:void(0);" class="ruleForm [+className+]"><div>[+content+]<input type="button" class="del" value="x" /><div class="clear"></div></div></form>'
 	},
 	
-	//Данные извне
+	//Данные извне (справочные данные)
 	data: {
-		//Непосредственно правила
+		/**
+		 * @prop rules {objec_plain} — Непосредственно правила (то, что пришло из PHP)
+		 * @prop rules[item] {string|array} — Группа правил (если массив — то группа) или комментарий (тогда строка). Ключ — имя группы / комментария.
+		 * @prop rules[item][] {string|array} — Конкретное правило внутри группы.
+		 * @prop rules[item][].name {string} — Имя правила (название функции в PHP).
+		 * @prop rules[item][].param {string} — Параметры правила (то, что передаётся в функцию PHP внутри скобок).
+		 */
 		rules: {},
-		//Список ролей
+		//Список всех существующих ролей на сайте
 		roles: {},
-		//Список шаблонов
+		//Список всех существующих шаблонов на сайте
 		templates: {},
-		//Список полей документа (и TV)
+		//Список всех существующих полей документа (и TV)
 		fields: new Array()
 	},
 	
@@ -41,14 +46,24 @@ var Rules = {
 	constructorRules: function(){
 		var _this = this;
 		
-		for (var i = 0, len = _this.data.templates.length; i < len; i++){
+		//Перебираем все шаблоны и добавляем к ним такие же с отрицанием
+		for (
+			var i = 0, len = _this.data.templates.length;
+			i < len;
+			i++
+		){
 			_this.data.templates.push({
 				value: '!' + _this.data.templates[i].value,
 				label: '!' + _this.data.templates[i].label
 			});
 		}
 		
-		for (var i = 0, len = _this.data.roles.length; i < len; i++){
+		//Перебираем все роли и добавляем к ним такие же с отрицанием
+		for (
+			var i = 0, len = _this.data.roles.length;
+			i < len;
+			i++
+		){
 			_this.data.roles.push({
 				value: '!' + _this.data.roles[i].value,
 				label: '!' + _this.data.roles[i].label
@@ -57,12 +72,24 @@ var Rules = {
 		
 		//Перебираем объект
 		$.each(_this.data.rules, function(groupName, elem){
-			if (groupName == 'comment_top' || groupName == 'comment_bottom'){
+			//Если это группа-комментарий
+			if (
+				groupName == 'comment_top' ||
+				groupName == 'comment_bottom'
+			){
 				_this.newComment(elem, groupName);
+			//Если это обычная группа с правилами
 			}else{
 				var $group = _this.newGroup(groupName);
+				
+				//Перебираем правила внутри группы
 				$.each(elem, function(key, val){
-					_this.newRule(val.name, val.param, $group);
+					//Создаём правила
+					_this.newRule(
+						val.name,
+						val.param,
+						$group
+					);
 				});
 			}
 		});
@@ -84,6 +111,7 @@ var Rules = {
 	//Создаёт новое правило
 	newRule: function(ruleName, ruleParam, $group){
 		var	_this = this,
+			//
 			masParam = new Array();
 		
 		//Если это катсомное правило
@@ -93,7 +121,9 @@ var Rules = {
 		}else{
 			//Проверяем переданны ли параметры, если нет, то создаём пустой массив с параметрами
 			if(ruleParam){
+				//Обрезаем крайние кавычки (значения параметров всегда в кавычках)
 				ruleParam = ruleParam.substr(1, ruleParam.length - 2);
+				//Разбиваем параметры
 				masParam = ruleParam.split("','");
 			}
 		}		
@@ -206,7 +236,7 @@ var Rules = {
 		}
 		
 		_this.render(_this.indexParam, $group);
-
+		
 		_this.indexParam++;
 	},
 	
@@ -239,7 +269,7 @@ var Rules = {
 		$elem.data('ddRuleIndex', indexRender);
 		//Запомним ссылку на html-элемент правила
 		_this.rulesMas[indexRender].html = $elem;
-
+		
 		//Проверяем на наличие группы
 //		if (!$group.length){
 //			$group = $('.group.default');
@@ -327,23 +357,28 @@ function ddRule(name, params){
 
 //Рендеринг правила в html
 ddRule.prototype.render = function(){
+	//Массив всех параметров (ключ — имя параметра)
 	var outMas = new Array();
 	
 	//Перебираем параметры, запускаем для них render()
 	$.each(this.params, function(key, val){
 		outMas[key] = val.render();
 	});
-
-	return $.ddTools.parseChunkAssoc(Rules.tpls.ruleForm, {
-		className: this.name,
-		content: '<span class="fieldName">' + this.name + ': </span>' + outMas.join('')
-	});
+	
+	return $.ddTools.parseChunkAssoc(
+		Rules.tpls.ruleForm,
+		{
+			className: this.name,
+			content: '<span class="fieldName">' + this.name + ': </span>' + outMas.join('')
+		}
+	);
 };
 
 //Сохранение правила в строку
 ddRule.prototype.save = function(){
 	//Создаем массив со значениями полей
-	var outSaveMas = new Array(), html = this.html;
+	var outSaveMas = new Array(),
+		html = this.html;
 	
 	//Вызываем сохранение объекта, передаём ему HTML элемент
 	$.each(this.params, function(key, val){
@@ -908,7 +943,10 @@ function ddParam_checkbox(name, value, displayName, defaultValue){
 	defaultValue = (defaultValue == '1') ? true : false;
 	
 	//Если значение не задано, либо задано пустым
-	if ($.type(value) == 'undefined' || $.trim(value) == ''){
+	if (
+		$.type(value) == 'undefined' ||
+		$.trim(value) == ''
+	){
 		//Значит берём значение по умолчанию
 		value = defaultValue;
 	}else{
