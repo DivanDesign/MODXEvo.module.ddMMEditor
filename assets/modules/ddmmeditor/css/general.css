@@ -8,7 +8,17 @@ body {
 	display: block !important;
 	float:none !important;
 }
-
+.ruleForm input[type=text]:not(.form-control), 
+.ruleForm input[type=password], 
+.ruleForm input[type=number], 
+.ruleForm input[type=email], 
+.ruleForm input[type=date], 
+.ruleForm input[type=url], 
+.ruleForm input[type=search], 
+.ruleForm select,
+.ruleForm textarea{
+	width: auto;
+}
 #ui-tabs-1, #rules_cont, #rules_cont ul {
 	margin: 0;
 	padding: 0;
@@ -103,6 +113,7 @@ body {
 
 .ruleForm > div > * {
 	display:inline-block;
+	width: auto;
 	margin-right: 0.5em;
 	float:left;
 }

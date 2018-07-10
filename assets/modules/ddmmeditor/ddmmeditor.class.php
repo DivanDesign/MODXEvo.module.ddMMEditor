@@ -3,8 +3,7 @@
  * ddMMEditor class
  * @version: 1.0 (2014-01-20)
  * 
- * @copyright 2014, DivanDesign
- * http://www.DivanDesign.biz
+ * @copyright 2013–2014 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 if (!class_exists('ddMMEditor')){
@@ -14,27 +13,39 @@ class ddMMEditor {
 	
 	/**
 	 * readRules
-	 * @version 1.0 (2014-01-20)
+	 * @version 1.0.1 (2017-11-06)
 	 * 
 	 * @desc Считывает правила из файла и подготавливает JSON для js.
 	 * 
-	 * @return {string: JSON} - Считанные правила.
+	 * @return {string_JSON} — Считанные правила.
 	 */
 	public static function readRules(){
+		//Результирующий массив
+		$rules = array();
+		
 		//Считываем файл
 		$config = file(self::$rulesFile);
-		$rules = array();
+		
+		//Имя группы (используется как ключ в результирующем массиве)
 		$group = '';
+		
 		//Перебираем файл по строкам
 		foreach ($config as $line){
 			$line = trim($line);
 			
-			if ($line == '<?php' || $line == '?>' || $line == ''){continue;}
+			if (
+				$line == '<?php' ||
+				$line == '?>' ||
+				$line == ''
+			){continue;}
 			
-			//Создаём группу
+			//Если это строка объявления группы — создаём группу
 			if (strncasecmp($line, '//group', 7) == 0){
+				//Имя группы
 				$group = substr($line, 8);
+				//Если такой группы ещё нет — инициализируем
 				if (!isset($rules[$group])){$rules[$group] = array();}
+				
 				continue;
 			}
 			
@@ -76,13 +87,13 @@ class ddMMEditor {
 	
 	/**
 	 * saveRules
-	 * @version 1.0 (2014-01-20)
+	 * @version 1.0.1 (2017-11-06)
 	 * 
 	 * @desc Сохраняет переданные из js правила в файл.
 	 * 
-	 * @param $saveMas {string: JSON} - Правила для сохранения. @required
+	 * @param $saveMas {string_JSON} — Правила для сохранения. @required
 	 * 
-	 * @return {string; false} - Статус.
+	 * @return {string|false} — Статус.
 	 */
 	public static function saveRules($saveMas){
 		//Если массив с постом не пустой, то запускаем сохранение
@@ -106,6 +117,7 @@ class ddMMEditor {
 			
 			//Закрываем файл
 			fclose($file);
+			
 			return "Write success";
 		}else{
 			return false;
@@ -118,7 +130,7 @@ class ddMMEditor {
 	 * 
 	 * @desc Получает данные списков автозаполнения для js.
 	 * 
-	 * @return {array} - Считанные правила.
+	 * @return {array} — Считанные правила.
 	 */
 	public static function getAutocompleteData(){
 		global $modx;
@@ -187,11 +199,11 @@ class ddMMEditor {
 	
 	/**
 	 * checkMMConfig
-	 * @version 1.0 (2014-01-20)
+	 * @version 1.0.1 (2017-11-06)
 	 * 
 	 * @desc Проверяет не задан ли случаем в конфиге MM чанк с правилами.
 	 * 
-	 * @return {boolean} - Всё ли хорошо?
+	 * @return {boolean} — Всё ли хорошо?
 	 */
 	public static function checkMMConfig(){
 		global $modx;
@@ -200,7 +212,13 @@ class ddMMEditor {
 		if (isset($modx->pluginCache['ManagerManager'])){
 			$mmProperties = $modx->pluginCache['ManagerManagerProps'];
 		}else{
-			$dbResult = $modx->db->query("SELECT `properties` FROM ".$modx->getFullTableName('site_plugins')." WHERE `name` = 'ManagerManager' AND `disabled` = 0;");
+			$dbResult = $modx->db->query("
+				SELECT `properties`
+				FROM ".$modx->getFullTableName('site_plugins')."
+				WHERE
+					`name` = 'ManagerManager' AND
+					`disabled` = 0;
+			");
 			
 			if ($modx->db->getRecordCount($dbResult) == 1){
 				$row = $modx->db->getRow($dbResult);
@@ -214,7 +232,10 @@ class ddMMEditor {
 		$mmProperties = $modx->parseProperties($mmProperties);
 		
 		//Если чанк в конфиге MM задан
-		if (isset($mmProperties['config_chunk']) && $mmProperties['config_chunk'] != ''){
+		if (
+			isset($mmProperties['config_chunk']) &&
+			$mmProperties['config_chunk'] != ''
+		){
 			//Ругаемся
 			return false;
 		}else{
