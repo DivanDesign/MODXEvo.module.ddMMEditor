@@ -1,10 +1,10 @@
 /**
  * ddmmeditor.js
- * @version 1.5 (2014-01-23)
+ * @version 1.5.1 (2018-07-10)
  * 
  * @desc Описание класса для работы с правилами.
  * 
- * @copyright 2013–2014 [DivanDesign]{@link http://www.DivanDesign.biz }
+ * @copyright 2013–2018 [DivanDesign]{@link http://www.DivanDesign.biz }
  **/
 
 $(function(){
