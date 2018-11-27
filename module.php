@@ -17,7 +17,11 @@ if(!$modx){
 	return;
 }else{
 	//Сравниваем url сайта из конфига с реальным (в качестве длины берём длину из конфига, чтобы лишнее не смотреть)
-	if (strncasecmp($modx->config['site_url'], $_SERVER['HTTP_REFERER'], strlen($modx->config['site_url'])) != 0){
+	if (strncasecmp(
+		$modx->config['site_url'],
+		$_SERVER['HTTP_REFERER'],
+		strlen($modx->config['site_url'])
+	) != 0){
 		return;
 	}
 }
@@ -54,10 +58,16 @@ if (!ddMMEditor::checkMMConfig()){
 }
 
 //Формируем вывод
-echo ddTools::parseText(file_get_contents($moduleDir.'template.html'), array(
-	'site_url' => $modx->config['site_url'],
-	'manager_theme' => MODX_MANAGER_URL.'media/style/'.$modx->config['manager_theme'].'/style.css',
-	'inline_js' => $outputJs,
-	'version' => $version
-), '[+', '+]', false);
+echo ddTools::parseText(
+	file_get_contents($moduleDir.'template.html'),
+	array(
+		'site_url' => $modx->config['site_url'],
+		'manager_theme' => MODX_MANAGER_URL.'media/style/'.$modx->config['manager_theme'].'/style.css',
+		'inline_js' => $outputJs,
+		'version' => $version
+	),
+	'[+',
+	'+]',
+	false
+);
 //?>
