@@ -1,6 +1,6 @@
 /**
  * ddmmeditor.class.js
- * @version 1.5.1 (2018-07-10)
+ * @version 1.5.2 (2018-12-27)
  * 
  * @desc Описание класса для работы с правилами.
  * 
@@ -12,9 +12,9 @@ var Rules = {
 	//Шаблоны
 	tpls: {
 		//Группа правил
-		$group: $('<div class="group"><div class="title"><span>New group</span> <a href="#Edit" class="false editButton"></a></div><div class="titleButtons"><a href="#Hide" class="false hideButton"><span>+</span><span>&minus;</span></a> <a class="false deleteButton" href="#Remove">×</a></div></div>'),
+		$group: $('<div class="group"><div class="title"><span>New group</span> <a href="#Edit" class="fa fa-edit false button editButton"></a></div><div class="titleButtons"><a href="#Hide" class="false button hideButton"><span class="fa fa-plus"></span><span class="fa fa-minus"></span></a> <a class="fa fa-trash false button deleteButton" href="#Remove"></a></div></div>'),
 		//Форма правила
-		ruleForm: '<form action="javascript:void(0);" class="ruleForm [+className+]"><div>[+content+]<input type="button" class="del" value="x" /><div class="clear"></div></div></form>'
+		ruleForm: '<form action="javascript:void(0);" class="ruleForm [+className+]"><div>[+content+]<a href="#Remove%20row" class="fa fa-trash false button btnDeleteRow"></a><div class="clear"></div></div></form>'
 	},
 	
 	//Данные извне (справочные данные)
@@ -1020,7 +1020,7 @@ ddParam_select.prototype.save = function(htmlObj){
 function ddParam_multiple(className, value, displayName, defaultValue, required){
 	
 	//Запускаем родительский конструктор с необходимыми параметрами (по умолчанию не обязательно для заполнения)
-	ddParam_multiple.superclass.constructor.apply(this, [className, value, displayName, defaultValue, ($.type(required) != 'undefined' && required) ? true : false, null, '<input type="button" value="+" class="autocomplete_show" />']);
+	ddParam_multiple.superclass.constructor.apply(this, [className, value, displayName, defaultValue, ($.type(required) != 'undefined' && required) ? true : false, null, '<a href="#Plus" class="fa fa-plus false button autocomplete_show"></a>']);
 }
 extend(ddParam_multiple, ddParam_input);
 

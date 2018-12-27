@@ -1,11 +1,11 @@
 //<?php
 /**
  * ddMMEditor module
- * @version 1.5.1 (2018-07-10)
+ * @version 1.5.2 (2018-12-27)
  * 
  * @desc User-friendly module for the ManagerManager configuration file editing.
  * 
- * @link http://code.divandesign.biz/modx/ddmmeditor/1.5.1
+ * @link http://code.divandesign.biz/modx/ddmmeditor
  * 
  * @copyright 2013–2018 DivanDesign {@link http://www.DivanDesign.biz }
  */
@@ -17,12 +17,16 @@ if(!$modx){
 	return;
 }else{
 	//Сравниваем url сайта из конфига с реальным (в качестве длины берём длину из конфига, чтобы лишнее не смотреть)
-	if (strncasecmp($modx->config['site_url'], $_SERVER['HTTP_REFERER'], strlen($modx->config['site_url'])) != 0){
+	if (strncasecmp(
+		$modx->config['site_url'],
+		$_SERVER['HTTP_REFERER'],
+		strlen($modx->config['site_url'])
+	) != 0){
 		return;
 	}
 }
 
-$version = '1.5.1';
+$version = '1.5.2';
 
 $moduleDir = MODX_BASE_PATH.'assets/modules/ddmmeditor/';
 
@@ -54,10 +58,16 @@ if (!ddMMEditor::checkMMConfig()){
 }
 
 //Формируем вывод
-echo ddTools::parseText(file_get_contents($moduleDir.'template.html'), array(
-	'site_url' => $modx->config['site_url'],
-	'manager_theme' => MODX_MANAGER_URL.'media/style/'.$modx->config['manager_theme'].'/style.css',
-	'inline_js' => $outputJs,
-	'version' => $version
-), '[+', '+]', false);
+echo ddTools::parseText(
+	file_get_contents($moduleDir.'template.html'),
+	array(
+		'site_url' => $modx->config['site_url'],
+		'manager_theme' => MODX_MANAGER_URL.'media/style/'.$modx->config['manager_theme'].'/style.css',
+		'inline_js' => $outputJs,
+		'version' => $version
+	),
+	'[+',
+	'+]',
+	false
+);
 //?>

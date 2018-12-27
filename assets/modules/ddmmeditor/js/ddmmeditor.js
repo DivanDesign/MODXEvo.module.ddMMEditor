@@ -1,6 +1,6 @@
 /**
  * ddmmeditor.js
- * @version 1.5.1 (2018-07-10)
+ * @version 1.5.2 (2018-12-27)
  * 
  * @desc Описание класса для работы с правилами.
  * 
@@ -163,7 +163,7 @@ $(function(){
 	});
 	
 	//Удаляем форму
-	$.ddTools.$body.on('click', 'input.del', function(){
+	$.ddTools.$body.on('click', '.btnDeleteRow', function(){
 		$(this).parents('form.ruleForm:first').remove();
 	});
 

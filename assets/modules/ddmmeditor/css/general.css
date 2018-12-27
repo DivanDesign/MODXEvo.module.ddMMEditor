@@ -8,6 +8,16 @@ body {
 	display: block !important;
 	float:none !important;
 }
+
+.button {
+	opacity: .8;
+	text-decoration: none !important;
+}
+
+.button:hover {
+	opacity: 1;
+}
+
 .ruleForm input[type=text]:not(.form-control), 
 .ruleForm input[type=password], 
 .ruleForm input[type=number], 
@@ -19,13 +29,16 @@ body {
 .ruleForm textarea{
 	width: auto;
 }
-#ui-tabs-1, #rules_cont, #rules_cont ul {
+#ui-tabs-1,
+#rules_cont ul {
 	margin: 0;
 	padding: 0;
 }
 #rules_cont li {margin: 0; padding: 0; list-style: none;} 
 
-.group, .ruleForm, .ui-state-highlight {
+.group,
+.ruleForm,
+.ui-state-highlight {
 	display: block;
 	border: 1px solid #E3E3E3;
 /* 	border-radius: 3px; */
@@ -41,7 +54,8 @@ body {
 
 .group.default {border-color: #aaaaaa;}
 
-.group .title span, span.fieldName {cursor: n-resize;}
+.group .title span,
+span.fieldName {cursor: n-resize;}
 
 .group .title {
     display: block;
@@ -57,48 +71,48 @@ body {
 
 .group .editButton {
 	display: inline-block;
-	width: 8px;
-	height: 8px;
-	background: url('../images/edit.png');
-	opacity: .5;
+	margin-left: .3em;
+	position: relative;
+	top: .2em;
 	-webkit-transition: opacity 0.3s ease-out;
 	-moz-transition: opacity 0.3s ease-out;
 	-ms-transition: opacity 0.3s ease-out;
 	-o-transition: opacity 0.3s ease-out;
 	transition: opacity 0.3s ease-out;
+	text-decoration: none;
 }
-
-.group .editButton:hover {opacity: 1;}
 
 .group .titleButtons {
 /* 	border-radius: 3px 3px 3px 3px; */
 	height: 16px;
-    padding: 0 7px;
+    padding: 0 5px;
     position: absolute;
     right: -6px;
-    top: -9px;
+    top: -11px;
     background: #FFFFFF;
 	box-shadow: 0 0 2px #AAAAAA;
     white-space: nowrap;
 	font-size: 16px;
-	line-height: 16px;
-    letter-spacing: 2px;
+	line-height: 20px;
+    letter-spacing: 1px;
 }
-
-.group .titleButtons a {text-decoration: none;}
 
 .group .titleButtons .hideButton span:first-child {display: none;}
 
 .group .delete:hover {border-color: #AA0000;}
 
-.group.closed {border-color: #F9C197;}
-.group.closed .title {color: #F9720C;}
+.group.closed {
+	border-color: rgba(0,0,0,.3);
+	background-color: transparent;
+}
+.group.closed .title {color: inherit;}
 .group.closed .titleButtons .hideButton span:last-child {display: none;}
 .group.closed .titleButtons .hideButton span:first-child {display: inline;}
 
 /* .group.closed .delete {display: none;} */
 
-.ruleForm, .group .ui-state-highlight {
+.ruleForm,
+.group .ui-state-highlight {
 	padding: 8px 5px 7px;
 	margin: 0 0 10px;
 	white-space: nowrap;
@@ -128,13 +142,19 @@ body {
 	opacity: .85;
 }
 
-label, input.del {
+label,
+.btnDeleteRow {
 	margin-left: 5px;
 }
 span.fieldName {
 	display: inline-block;
 	width: 170px;
 /* 	font-weight: bold; */
+}
+
+.ruleForm .button {
+	font-size: 1.5em;
+	line-height: 1.3em;
 }
 
 .ddRule_customRule {width:800px;}
@@ -164,7 +184,8 @@ select#new_role_select {display: block;}
 	background: url("../images/ajaxloader.gif") no-repeat center rgba(255,255,255,0.5);
 }
 
-.tab_cont .tab, .tab_cont .tab a {
+.tab_cont .tab,
+.tab_cont .tab a {
 	outline: none;
 }
 
@@ -238,7 +259,8 @@ select#new_role_select {display: block;}
 	cursor: pointer;
 }
 
-.ui-autocomplete a:hover, .ui-autocomplete .ui-state-focus {
+.ui-autocomplete a:hover,
+.ui-autocomplete .ui-state-focus {
 	background: #007CC3;
 	color: #FFFFFF;
 }
