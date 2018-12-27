@@ -10,7 +10,12 @@ body {
 }
 
 .button {
-	text-decoration: none;
+	opacity: .8;
+	text-decoration: none !important;
+}
+
+.button:hover {
+	opacity: 1;
 }
 
 .ruleForm input[type=text]:not(.form-control), 
@@ -69,7 +74,6 @@ span.fieldName {cursor: n-resize;}
 	margin-left: .3em;
 	position: relative;
 	top: .2em;
-	opacity: .8;
 	-webkit-transition: opacity 0.3s ease-out;
 	-moz-transition: opacity 0.3s ease-out;
 	-ms-transition: opacity 0.3s ease-out;
@@ -77,8 +81,6 @@ span.fieldName {cursor: n-resize;}
 	transition: opacity 0.3s ease-out;
 	text-decoration: none;
 }
-
-.group .editButton:hover {opacity: 1;}
 
 .group .titleButtons {
 /* 	border-radius: 3px 3px 3px 3px; */

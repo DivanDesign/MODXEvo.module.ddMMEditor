@@ -12,7 +12,7 @@ var Rules = {
 	//Шаблоны
 	tpls: {
 		//Группа правил
-		$group: $('<div class="group"><div class="title"><span>New group</span> <a href="#Edit" class="fa fa-edit false editButton"></a></div><div class="titleButtons"><a href="#Hide" class="false button hideButton"><span class="fa fa-plus"></span><span class="fa fa-minus"></span></a> <a class="fa fa-trash false button deleteButton" href="#Remove"></a></div></div>'),
+		$group: $('<div class="group"><div class="title"><span>New group</span> <a href="#Edit" class="fa fa-edit false button editButton"></a></div><div class="titleButtons"><a href="#Hide" class="false button hideButton"><span class="fa fa-plus"></span><span class="fa fa-minus"></span></a> <a class="fa fa-trash false button deleteButton" href="#Remove"></a></div></div>'),
 		//Форма правила
 		ruleForm: '<form action="javascript:void(0);" class="ruleForm [+className+]"><div>[+content+]<a href="#Remove%20row" class="fa fa-trash false button btnDeleteRow"></a><div class="clear"></div></div></form>'
 	},
